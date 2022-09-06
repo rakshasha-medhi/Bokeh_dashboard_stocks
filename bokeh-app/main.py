@@ -5,24 +5,13 @@ from bokeh.models import ColumnDataSource, DataTable, TableColumn
 from bokeh.layouts import column, row
 from bokeh.plotting import figure, show
 
-# DEFAULT_TICKERS = list(sp_df['Symbol'].values)
-# START, END = "2018-01-01", "2021-01-01"
 
-
-# def load_ticker(tickers):
-#     # df = yf.download(tickers, start=START, end=END)
-#     df = pd.read_csv("data/sp500_data.csv")
-#     return df["Close"].dropna()
 source_data = pd.read_csv('flatten_IHSG_unstacked_(b).csv', index_col = 'Date', parse_dates = True)
 source_data.columns = source_data.columns.str.replace('.JK', '')
-
-# print(source_data.head())
-# print(source_data.info())
 
 DEFAULT_TICKERS = list(source_data.columns)
 
 def get_data(d, t1, t2):
-    # d = load_ticker(DEFAULT_TICKERS)
     df = d[[t1, t2]]
     returns = df.pct_change().add_suffix("_returns")
     df = pd.concat([df, returns], axis=1)
@@ -33,8 +22,6 @@ def get_data(d, t1, t2):
 def nix(val, lst):
     return [x for x in lst if x!= val]
 
-# ticker1 = AutocompleteInput(title="Change Ticker Values Below:",value="BBCA.JK", completions = nix("BBRI.JK", DEFAULT_TICKERS), case_sensitive=False)
-# ticker2 = AutocompleteInput(title="Change Ticker Values Below:",value="BBRI.JK", completions = nix("BBCA.JK", DEFAULT_TICKERS), case_sensitive=False)
 ticker1 = AutocompleteInput(title="Change Ticker Values Below:",value="BBCA", completions = nix("BBRI", DEFAULT_TICKERS), case_sensitive=False)
 ticker2 = AutocompleteInput(title="Change Ticker Values Below:",value="BBRI", completions = nix("BBCA", DEFAULT_TICKERS), case_sensitive=False)
 
